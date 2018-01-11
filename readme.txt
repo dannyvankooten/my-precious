@@ -1,9 +1,9 @@
 === My Precious ===
 Contributors: Ibericode, DvanKooten, hchouhan, lapzor
 Tags: privacy, data
-Requires at least: 4.1
-Tested up to: 4.7
-Stable tag: 1.0
+Requires at least: 4.9
+Tested up to: 4.9
+Stable tag: 2.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -35,6 +35,10 @@ The following request data will be stripped off from all requests to `api.wordpr
 
 
 == Changelog ==
+
+#### 2.0 - January 11, 2018
+
+Dedicated filter is used to strip number of users - requires WordPress 4.9 or newer.
 
 #### 1.0 - December 7, 2016
 
