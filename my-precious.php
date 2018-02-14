@@ -2,7 +2,7 @@
 /*
 Plugin Name: My Precious
 Description: Quit leaking sensitive information to WordPress.org.
-Version: 1.0
+Version: 2.0
 Author: ibericode
 Author URI: https://ibericode.com/
 License: GPL v3
@@ -36,7 +36,7 @@ defined( 'ABSPATH' ) or exit;
  */
 function clean_http_request_args( $args, $url ) {
     // only act on requests to api.wordpress.org
-    if( strpos( $url, '://api.wordpress.org/' ) !== 5 ) {
+    if( wp_parse_url( $url, PHP_URL_HOST ) !== 'api.wordpress.org' ) {
         return $args;
     }
 
@@ -56,37 +56,17 @@ function clean_http_request_args( $args, $url ) {
 }
 
 /**
- * @param false|array|\WP_Error $preempt
- * @param array $args
- * @param string $url
- * @return array|\WP_Error
+ * @param array $query
+ * @return array
  */
-function pre_version_check_http_request( $preempt, $args, $url ) {
-
-    // TODO: If something else pre-fired this request than re-running this request makes no sense. The "damage" has already been done at this point.
-    if( $preempt !== false ) {
-        return $preempt;
-    }
-
-    // only act on requests to api.wordpress.org
-    if( strpos( $url, '://api.wordpress.org/core/version-check' ) !== 5 ) {
-        return $preempt;
-    }
-
-    // did we clean this request already?
-    if( ! empty( $args['_my_precious'] ) ) {
-        return $preempt;
-    }
-
+function filter_core_version_check_query_args( $query ) {
     // stop sending # of users to WordPress.org
-    $url = remove_query_arg( 'users', $url );
+    if( isset( $query['users'] ) ) {
+        unset( $query['users'] );
+    }
 
-    // make request
-    $args['_my_precious'] = true;
-    $result = wp_remote_request( $url, $args );
-
-    return $result;
+    return $query;
 }
 
 add_filter( 'http_request_args', 'my_precious\\clean_http_request_args', 10, 2 );
-add_filter( 'pre_http_request', 'my_precious\\pre_version_check_http_request', 10, 3 );
+add_filter( 'core_version_check_query_args', 'my_precious\\filter_core_version_check_query_args', 10, 1 );
