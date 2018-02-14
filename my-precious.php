@@ -8,7 +8,7 @@ Author URI: https://ibericode.com/
 License: GPL v3
 
 My Precious - quit leaking sensitive information to WordPress.org
-Copyright (C) 2016, Danny van Kooten, danny@ibericode.com
+Copyright (C) 2016-2018, Danny van Kooten, danny@ibericode.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
